@@ -16,6 +16,7 @@ public class TesteGetClientes {
 					", Endereço: " + cliente.getEndereco()
 					);
 		}
+		dao.fecharConexao();
 	}
 
 }
