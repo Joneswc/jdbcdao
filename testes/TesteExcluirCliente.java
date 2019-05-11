@@ -3,7 +3,7 @@ package javadb.testes;
 import javadb.dao.ClienteDAO;
 import javadb.modelo.Cliente;
 
-public class TesteEcluirCliente {
+public class TesteExcluirCliente {
 
 	public static void main(String[] args) {
 		ClienteDAO dao = new ClienteDAO();
