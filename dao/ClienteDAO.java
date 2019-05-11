@@ -54,11 +54,58 @@ public class ClienteDAO {
 		}
 	}
 
+	public void editar(Cliente cliente) {
+		String sql = "UPDATE clientes SET nome=?, email=?, endereco=? where id=?";
+		try {
+			PreparedStatement stmt = this.con.prepareStatement(sql);
+			stmt.setString(1, cliente.getNome());
+			stmt.setString(2, cliente.getEmail());
+			stmt.setString(3, cliente.getEndereco());
+			stmt.setLong(4, cliente.getId());
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void excluir(Cliente cliente) {
+		try {
+			PreparedStatement stmt = con.prepareStatement("DELETE FROM clientes where id=?");
+			stmt.setLong(1, cliente.getId());
+			stmt.execute();
+			stmt.close();
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
+	}
+
 	public void fecharConexao() {
 		try {
 			this.con.close();
 			System.out.println("A conexao com o banco foi fechada!");
 		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public Cliente pesquisaClientePorID(int id) {
+		try {
+			Cliente cliente = new Cliente();
+			PreparedStatement stmt = this.con.prepareStatement("select * from clientes where id=?");
+			stmt.setLong(1, id);
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				cliente.setId(rs.getLong("id"));
+				cliente.setNome(rs.getString("nome"));
+				cliente.setEmail(rs.getString("email"));
+				cliente.setEndereco(rs.getString("endereco"));
+			}
+			rs.close();
+			stmt.close();
+			return cliente;
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
